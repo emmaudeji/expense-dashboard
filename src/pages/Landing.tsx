@@ -9,6 +9,7 @@ const Landing = () => {
     loadExpenses();
   }, []);
 
+  
   return (
     <main className="p-4 min-h-screen max-w-3xl mx-auto">
       <section className="p-6 flex flex-col justify-between gap-24 text-white rounded-lg min-h-60 bg-blue-600">
