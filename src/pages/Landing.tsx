@@ -23,9 +23,9 @@ const Landing = () => {
           <Link to={"/expenses"} className="bg-white py-2 px-6 rounded-md text-blue-600">
             View dashboard
           </Link>
-          <Link to={"/add-expense"} className="bg-white py-2 px-6 rounded-md text-blue-600">
+          {/* <Link to={"/add-expense"} className="bg-white py-2 px-6 rounded-md text-blue-600">
             Add expenses
-          </Link>
+          </Link> */}
         </div>
       </section>
     </main>
