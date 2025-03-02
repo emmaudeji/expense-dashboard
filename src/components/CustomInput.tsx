@@ -1,4 +1,3 @@
-'use client';
 
 import { Eye, EyeOff, FilePenLine } from "lucide-react";
 import React, { useState } from "react";

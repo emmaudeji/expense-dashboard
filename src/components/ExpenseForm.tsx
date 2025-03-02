@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useExpenseContext } from "@/context/expensesContext";
 import { Expense } from "@/types";
 import { CustomInput } from "./CustomInput";
