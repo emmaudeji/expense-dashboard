@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recha
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28"]; // Colors for Active, Draft, Archived
 
-const StatusExpensesPieChart = () => {
+const StatusPieChart = () => {
   const { expenses } = useExpenseStore();
   const statusSummary = getStatusExpenseSummary(expenses); // [{ status, total, count }]
 
@@ -41,4 +41,4 @@ const StatusExpensesPieChart = () => {
   );
 };
 
-export default StatusExpensesPieChart;
+export default StatusPieChart;

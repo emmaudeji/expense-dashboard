@@ -16,7 +16,7 @@ export const getMonthlyExpenseSummary = (expenses: Expense[]) => {
         };
       }
   
-      monthlySummary[monthKey].total += amount;
+      monthlySummary[monthKey].total += Number(amount);
       monthlySummary[monthKey].count += 1;
     });
   
@@ -38,7 +38,7 @@ export const getMonthlyExpenseSummary = (expenses: Expense[]) => {
         };
       }
   
-      categorySummary[category].total += amount;
+      categorySummary[category].total += Number(amount);
       categorySummary[category].count += 1;
     });
   
@@ -60,7 +60,7 @@ export const getMonthlyExpenseSummary = (expenses: Expense[]) => {
         };
       }
   
-      statusSummary[status].total += amount;
+      statusSummary[status].total += Number(amount);
       statusSummary[status].count += 1;
     });
   

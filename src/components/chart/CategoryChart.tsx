@@ -11,7 +11,7 @@ import {
   Legend,
 } from "recharts";
 
-const CategoryExpensesChart = () => {
+const CategoryChart = () => {
   const { expenses } = useExpenseStore();
   const categorySummary = getCategoryExpenseSummary(expenses); // [{ category, total, count }]
 
@@ -32,11 +32,11 @@ const CategoryExpensesChart = () => {
           margin={{ top: 20, right: 30, left: 80, bottom: 10 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis type="number" />
-          <YAxis dataKey="category" type="category" width={120} />
+          <XAxis type="number" style={{'fontSize': '8px'}}/>
+          <YAxis dataKey="category" type="category" width={60} style={{'fontSize': '8px'}} />
           <Tooltip formatter={(value) => `₦${value.toLocaleString()}`} />
           <Legend />
-          <Bar dataKey="amount" fill="#8884d8" name="Amount (₦)" barSize={15} />
+          <Bar dataKey="amount" fill="#0058B4" name="Amount (₦)" barSize={15} />
           <Bar dataKey="totalExpenses" fill="#82ca9d" name="Total Expenses" barSize={15} />
         </BarChart>
       </ResponsiveContainer>
@@ -44,4 +44,4 @@ const CategoryExpensesChart = () => {
   );
 };
 
-export default CategoryExpensesChart;
+export default CategoryChart;

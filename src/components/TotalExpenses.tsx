@@ -6,8 +6,9 @@ const TotalExpenses = () => {
 
   // Sum amount
   const totalExp = useMemo(() => {
-    return expenses.reduce((acc, item) => acc + item.amount, 0);
+    return expenses.reduce((acc, item) => acc + Number(item.amount), 0);
   }, [expenses]);
+  
 
   return (
     <div className="leading">

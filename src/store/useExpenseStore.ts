@@ -25,19 +25,19 @@ const useExpenseStore = create<ExpenseStore>((set, get) => ({
 
   loadExpenses: async () => {
     try {
-      const storedData = localStorage.getItem("expenses");
-      if (storedData) {
-        const data = JSON.parse(storedData)
-        set({ expenses:data })
-        const slicedData =  data.slice(0, settings.LIMIT);
-        set({ paginatedExpenses: slicedData });
-      } else {
+      // const storedData = localStorage.getItem("expenses");
+      // if (storedData) {
+      //   const data = JSON.parse(storedData)
+      //   set({ expenses:data })
+      //   const slicedData =  data.slice(0, settings.LIMIT);
+      //   set({ paginatedExpenses: slicedData });
+      // } else {
         const {data} = await fetchExpenses({});
         localStorage.setItem("expenses", JSON.stringify(data));
         set({ expenses: data });
         const slicedData =  data.slice(0, settings.LIMIT);
         set({ paginatedExpenses: slicedData });
-      }
+      // }
     } catch (error) {
       console.error("Failed to parse expenses from localStorage", error);
       set({ expenses: expensesData })
