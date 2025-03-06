@@ -23,6 +23,8 @@ const useExpenseStore = create<ExpenseStore>((set, get) => ({
     set({paginatedExpenses:expenses})
     },
 
+
+  
   loadExpenses: async () => {
     try {
       // const storedData = localStorage.getItem("expenses");
@@ -78,5 +80,6 @@ const useExpenseStore = create<ExpenseStore>((set, get) => ({
     return newExpenses
   },
 }));
+
 
 export default useExpenseStore;
