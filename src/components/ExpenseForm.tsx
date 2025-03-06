@@ -4,7 +4,7 @@ import { Expense } from "@/types";
 import { CustomInput } from "./CustomInput";
 import { Button } from "./ui/button";
 import { generateSlug } from "@/lib/generateSlug";
-import { expenseCategories, expenseStatuses } from "@/data";
+import { expenseCategories,   } from "@/data";
 
 const ExpenseForm = ({ 
   expense, 
@@ -20,13 +20,12 @@ const ExpenseForm = ({
 
   // Default Expense Data
   const defaultValues: Expense = {
-    id: Date.now().toString(),
     name: "",
     amount: 0,
     category: "",
     date: new Date().toISOString().split("T")[0], // Default to today's date
     slug: "",
-    status: "DRAFT",
+    status: "ACTIVE",
   };
 
   const [formData, setFormData] = useState<Expense>({ ...defaultValues });
@@ -72,12 +71,8 @@ const ExpenseForm = ({
 
       if (expense) {
         await handleUpdateExpense(newExpense);
-        // setData?.((prev) =>
-        //   prev.map((item) => (item.id === newExpense.id ? newExpense : item))
-        // );
       } else {
         await handleAddExpense({...newExpense, slug:generateSlug(formData.name)});
-        // setData?.((prev) => [newExpense, ...prev]);
       }
 
       setFormData(defaultValues);
@@ -90,6 +85,30 @@ const ExpenseForm = ({
       setLoading(false);
     }
   };
+
+  const saveDraft = async () => {
+    if (!validate()) return;
+
+    setLoading(true);
+    try {
+      const newExpense = { ...formData, status: "DRAFT" as const };
+
+      if (expense) {
+        await handleUpdateExpense(newExpense);
+      } else {
+        await handleAddExpense({...newExpense, slug:generateSlug(formData.name)});
+      }
+
+      setFormData(defaultValues);
+      closeModal(false)
+    //   push("/expenses?success=Expense saved successfully.");
+    } catch (err) {
+      console.error("Error saving expense:", err);
+      setError({ general: "Something went wrong, please try again." });
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <form 
@@ -154,7 +173,7 @@ const ExpenseForm = ({
       />
 
       {/* Status Select */}
-      <div>
+      {/* <div>
         <label className="block text-sm font-medium">Status</label>
         <select 
           name="status" 
@@ -168,15 +187,26 @@ const ExpenseForm = ({
             )
           }
         </select>
-      </div>
+      </div> */}
 
       {/* Submit Button */}
+      <div className="flex gap-2">
       <Button 
         type="submit" 
         className="bg-black w-full text-white"
         disabled={loading}
       >
         {loading ? "Saving..." : expense ? "Update Expense" : "Add Expense"}
+      </Button>
+      </div>
+      <Button 
+      onClick={saveDraft}
+        type="button" 
+        variant={"outline"}
+        className=" w-full text-black border border-black"
+        disabled={loading}
+      >
+        {loading ? "Saving..." : "Save Draft"  }
       </Button>
     </form>
   );

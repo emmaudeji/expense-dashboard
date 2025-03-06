@@ -47,7 +47,7 @@ const ExpensesTable = () => {
                     <td className="p-3">{new Date(expense.date).toLocaleDateString()}</td>
                     <td className="p-3">{expense.name}</td>
                     <td className="p-3">{expense.category}</td>
-                    <td className="p-3 font-medium text-gray-800">${expense.amount}</td>
+                    <td className="p-3 font-medium text-gray-800">₦{expense.amount}</td>
                     <td className="p-3">
                       <span className={`px-2 py-1 text-xs font-semibold rounded-full 
                         ${expense.status === "ACTIVE" ? "bg-blue-100 text-blue-600" : 
@@ -58,35 +58,34 @@ const ExpensesTable = () => {
                       </span>
                     </td>
                     
-<td className="p-3 text-center flex justify-center gap-2">
-  <Link
-    className="text-blue-500 cursor-pointer hover:text-blue-700"
-    role="button"
-    tabIndex={0}
-    to={`/expenses/${expense.slug}`}
-    onKeyDown={(e) => e.key === "Enter" && console.log("View expense:", expense)}
-  >
-    <Eye size={16} />
-  </Link>
+                    <td className="p-3 text-center flex justify-center gap-2">
+                      <Link
+                        className="text-blue-500 cursor-pointer hover:text-blue-700"
+                        role="button"
+                        tabIndex={0}
+                        to={`/expenses/${expense.slug}`}
+                        onKeyDown={(e) => e.key === "Enter" && console.log("View expense:", expense)}
+                      >
+                        <Eye size={16} />
+                      </Link>
 
-  <span 
-    className="text-green-500 cursor-pointer hover:text-green-700"
-    role="button"
-    tabIndex={0}
-  >
-    <ExpensesFormModal btn={<Edit size={16} />} expense={expense} />
-  </span>
+                      <span 
+                        className="text-green-500 cursor-pointer hover:text-green-700"
+                        role="button"
+                        tabIndex={0}
+                      >
+                        <ExpensesFormModal btn={<Edit size={16} />} expense={expense} />
+                      </span>
 
-  <span 
-    className="text-red-500 cursor-pointer hover:text-red-700"
-    role="button"
-    tabIndex={0}
-    onClick={() => console.log("Delete expense:", expense)}
-    onKeyDown={(e) => e.key === "Enter" && console.log("Delete expense:", expense)}
-  >
-    <DeleteExpenseModal expense={expense} btn={<Trash size={16} />}/>
-  </span>
-</td>
+                      <span 
+                        className="text-red-500 cursor-pointer hover:text-red-700"
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => e.key === "Enter" && console.log("Delete expense:", expense)}
+                      >
+                        <DeleteExpenseModal expense={expense} btn={<Trash size={16} />}/>
+                      </span>
+                    </td>
                   </tr>
                 ))
               ) : (

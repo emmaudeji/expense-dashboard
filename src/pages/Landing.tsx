@@ -6,6 +6,7 @@ const Landing = () => {
   const { loadExpenses } = useExpenseStore();
  
   useEffect(() => {
+    // loading domi data
     loadExpenses();
   }, []);
 

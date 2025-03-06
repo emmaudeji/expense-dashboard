@@ -28,6 +28,7 @@ export const useExpense = () => {
   const sliceExpenses = (page:number, data?:Expense[]) => {
     const refactoredData = data?data:expenses
     const slicedData =  refactoredData.slice((page - 1) * settings.LIMIT, page * settings.LIMIT);
+    console.log({expenses,slicedData})
     setPaginatedExpenses(slicedData)
   }
  
@@ -95,21 +96,21 @@ export const useExpense = () => {
 
   // **Manage Expenses in Zustand**
   const handleAddExpense = async (expense: Expense) => {
-    await addExpense(expense);
-    sliceExpenses(1)
+    const data:Expense[] = await addExpense(expense);
+    sliceExpenses(1,data)
     setCurrentPage(1)
     // refetch();
   };
 
   const handleUpdateExpense = async (updatedExpense: Expense) => {
-    await updateExpense(updatedExpense);
-    sliceExpenses(currentPage)
+    const data = await updateExpense(updatedExpense);
+    sliceExpenses(currentPage,data)
     // refetch();
   };
 
   const handleDeleteExpense = async (slug: string) => {
-    await removeExpense(slug);
-    sliceExpenses(currentPage)
+    const data =await removeExpense(slug);
+    sliceExpenses(currentPage,data)
     // refetch();
   };
 

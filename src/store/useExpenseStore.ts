@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { Expense, Query } from "../types";
-import {fetchExpenses} from "@/service/airtable"
+import {addExpense, deleteExpense, fetchExpenses, updateExpense} from "@/service/airtable"
 import { expensesData } from "@/data";
 import { settings } from "@/config/settings";
 
 interface ExpenseStore {
   expenses: Expense[];
-  addExpense: (expense: Expense) => void;
-  removeExpense: (id: string) => void;
-  updateExpense: (data: Expense) => void;
+  addExpense: (expense: Expense) => Promise<Expense[]>;
+  removeExpense: (id: string) => Promise<Expense[]>;
+  updateExpense: (data: Expense) => Promise<Expense[]>;
   getExpenses: (param:Query) => Promise<{data:Expense[], tableSize?:number, error?:string}>;
   loadExpenses: () => void;
   paginatedExpenses: Expense[];
@@ -52,27 +52,30 @@ const useExpenseStore = create<ExpenseStore>((set, get) => ({
     return {data,tableSize,error} 
   },
 
-  addExpense: (expense) => {
-    // TODO: api add expenses, fetchPaginated expenses and set store state.
-    const newExpenses = [expense, ...get().expenses, ];
-    set({ expenses: newExpenses });
+  addExpense: async (expense):Promise<Expense[]> => {
+    const data = await addExpense(expense)
+    const newExpenses = [data, ...get().expenses, ];
+    await set({ expenses: newExpenses });
     localStorage.setItem("expenses", JSON.stringify(newExpenses));
+    return newExpenses
   },
 
-  removeExpense: (slug) => {
-    // TODO: api add expenses, fetchPaginated expenses and set store state.
-    const newExpenses = get().expenses.filter((exp) => exp.slug !== slug);
+  removeExpense: async (id) => {
+    await deleteExpense(id)
+    const newExpenses = get().expenses.filter((exp) => exp.id !== id);
     set({ expenses: newExpenses });
     localStorage.setItem("expenses", JSON.stringify(newExpenses));
+    return newExpenses
   },
 
-  updateExpense: (data) => {
-    // TODO: api add expenses, fetchPaginated expenses and set store state.
+  updateExpense: async (data) => {
+    await updateExpense(data.id!, data,)
     const newExpenses = get().expenses.map((exp) =>
       exp.id === data.id ? { ...exp, ...data } : exp
     );
     set({ expenses: newExpenses });
     localStorage.setItem("expenses", JSON.stringify(newExpenses));
+    return newExpenses
   },
 }));
 

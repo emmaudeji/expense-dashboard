@@ -9,7 +9,7 @@ const DeleteExpenseModal = ({ expense, btn }: { expense: Expense; btn: React.Rea
   const { handleDeleteExpense } = useExpenseContext();
 
   const onDelete = () => {
-    handleDeleteExpense(expense.slug);
+    handleDeleteExpense(expense.id!);
     setOpen(false);
   };
 

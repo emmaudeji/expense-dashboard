@@ -1,12 +1,20 @@
 import { Expense, Query } from "@/types";
 import Airtable from "airtable";
+import axios from "axios";
 
 const AIRTABLE_API_KEY = import.meta.env.VITE_AIRTABLE_API_KEY;
 const AIRTABLE_BASE_ID = import.meta.env.VITE_AIRTABLE_BASE_ID;
 const TABLE_NAME = import.meta.env.VITE_AIRTABLE_TABLE_NAME;
 
 const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(AIRTABLE_BASE_ID);
- 
+const api = axios.create({
+  baseURL: `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${TABLE_NAME}`,
+  headers: {
+    Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+    "Content-Type": "application/json",
+  },
+});
+
 export const fetchExpenses = async (
   params: Query
 ): Promise<{ data: Expense[]; tableSize?: number; error?: string }> => {
@@ -45,12 +53,16 @@ export const fetchExpenses = async (
       ? JSON.parse(params.status)
       : [];
 
-    if (selectedStatuses.length) {
-      const statusFilter = selectedStatuses
-        .map((st) => `{status} = "${st}"`)
-        .join(", ");
-      filterConditions.push(`OR(${statusFilter})`);
-    }
+      if (selectedStatuses.length) {
+        const statusFilter = selectedStatuses
+          .map((st) => `{status} = "${st}"`)
+          .join(", ");
+        filterConditions.push(`OR(${statusFilter})`);
+      } else {
+        // Exclude items where status = "ARCHIVED"
+        filterConditions.push(`NOT({status} = "ARCHIVED")`);
+      }
+      
 
     // Date Filters
     if (params.dateFrom) {
@@ -105,19 +117,36 @@ export const fetchExpenses = async (
   }
 };
 
-//   Add a new expense
-export const addExpense = async (expenses: Expense[]): Promise<Expense> => {
-  const response = await api.post("", 
-    {records: expenses.map((expense) => ({ fields: expense })) }
-);
-  return { id: response.data.id, ...response.data.fields };
+
+// Function to add a single expense
+export const addExpense = async (expense: Expense): Promise<Expense> => {
+  try {
+    const response = await api.post("", { fields: {...expense, amount:Number(expense.amount)} });
+
+    const record = response.data; // Airtable returns a single object
+    console.log({expense,record, response})
+    return {
+      id: record.id,
+      name: record.fields.name as string,
+      amount: record.fields.amount as number,
+      date: record.fields.date as string,
+      category: record.fields.category as string,
+      slug: record.fields.slug as string,
+      status: record.fields.status as "DRAFT" | "ACTIVE" | "ARCHIVED",
+    };
+  } catch (error) {
+    console.error("Error adding expense:", error);
+    throw error;
+  }
 };
 
 //  Update an expense
-export const updateExpense = async (id: string, updatedExpense: Partial<Expense>): Promise<Expense> => {
+export const updateExpense = async (dataId: string, updatedExpense: Partial<Expense>): Promise<Expense> => {
+  const {id, ...newData} = updatedExpense
   const response = await api.patch(`/${id}`, {
-    fields: updatedExpense,
+    fields: {...newData, amount: Number(newData.amount)},
   });
+  console.log({response})
   return { id: response.data.id, ...response.data.fields };
 };
 
