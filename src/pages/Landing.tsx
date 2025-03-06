@@ -1,18 +1,12 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useExpenseStore from "../store/useExpenseStore";
-import { fetchExpenses } from "@/lib/airtable";
 
 const Landing = () => {
   const { loadExpenses } = useExpenseStore();
 
   useEffect(() => {
-    const loaddata = async () => {
-      const data = await fetchExpenses()
-      console.log({data})
-      loadExpenses();
-    }
-   loaddata()
+    loadExpenses();
   }, []);
 
   
