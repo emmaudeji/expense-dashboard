@@ -20,7 +20,7 @@ const ExpenseForm = ({
 
   // Default Expense Data
   const defaultValues: Expense = {
-    id: Date.now(),
+    id: Date.now().toString(),
     name: "",
     amount: 0,
     category: "",

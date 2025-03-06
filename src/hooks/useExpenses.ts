@@ -3,7 +3,6 @@ import { Expense } from "../types";
 import { settings } from "../config/settings";
 import { Query } from "../types";
 import { useSearchParams } from "react-router-dom";
-import { fetchExpenses } from "../lib/expenses";
 import useExpenseStore from "@/store/useExpenseStore";
 
 export const defaultParam: Query = {
@@ -18,14 +17,20 @@ export const defaultParam: Query = {
 export const useExpense = () => {
   const [param, setParam] = useState<Query>(defaultParam);
   const [error, setError] = useState("");
-  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { addExpense, updateExpense, removeExpense, } = useExpenseStore();
+  const { addExpense, updateExpense, removeExpense, getExpenses, expenses, paginatedExpenses, setPaginatedExpenses} = useExpenseStore();
 
+  // used to achieve pagination
+  const sliceExpenses = (page:number, data?:Expense[]) => {
+    const refactoredData = data?data:expenses
+    const slicedData =  refactoredData.slice((page - 1) * settings.LIMIT, page * settings.LIMIT);
+    setPaginatedExpenses(slicedData)
+  }
+ 
   // Convert URLSearchParams to a Query object safely
   const getParamsFromURL = (): Query => {
     return {
@@ -57,14 +62,14 @@ export const useExpense = () => {
     setError("");
     setLoading(true);
 
-    const { data, error, tableSize } = await fetchExpenses(query);
+    const { data, error, tableSize } = await getExpenses(query);
 
     if (error) {
       setError(error);
-    } else {
-      setExpenses(data)
+    }  else {
+      sliceExpenses(query.page || currentPage, data)
     }
-
+    console.log({data,query})
     setLoading(false);
     setTotalPages(Math.ceil((tableSize || 0) / settings.LIMIT));
     setParam(query);
@@ -74,8 +79,7 @@ export const useExpense = () => {
   // Fetch expenses when URL changes
   useEffect(() => {
     const params = getParamsFromURL();
-    // console.log('loading')
-    filterExpenses(params);
+      filterExpenses(params)
   }, [searchParams.toString()]);
 
   const refetch = async () => {
@@ -85,23 +89,28 @@ export const useExpense = () => {
 
   const handlePageChange = async (page: number) => {
     setCurrentPage(page);
-    await filterExpenses({ ...param, page });
+    sliceExpenses(page)
+    // await filterExpenses({ ...param, page });
   };
 
   // **Manage Expenses in Zustand**
-  const handleAddExpense = (expense: Expense) => {
-    addExpense(expense);
-    refetch();
+  const handleAddExpense = async (expense: Expense) => {
+    await addExpense(expense);
+    sliceExpenses(1)
+    setCurrentPage(1)
+    // refetch();
   };
 
-  const handleUpdateExpense = (updatedExpense: Expense) => {
-    updateExpense(updatedExpense);
-    refetch();
+  const handleUpdateExpense = async (updatedExpense: Expense) => {
+    await updateExpense(updatedExpense);
+    sliceExpenses(currentPage)
+    // refetch();
   };
 
-  const handleDeleteExpense = (slug: string) => {
-    removeExpense(slug);
-    refetch();
+  const handleDeleteExpense = async (slug: string) => {
+    await removeExpense(slug);
+    sliceExpenses(currentPage)
+    // refetch();
   };
 
   return {
@@ -110,7 +119,8 @@ export const useExpense = () => {
     handlePageChange,
     param,
     setParam,
-    expenses,setExpenses,
+    expenses, 
+    paginatedExpenses,
     error,setError,
     totalPages,setTotalPages,
     currentPage, setCurrentPage,    

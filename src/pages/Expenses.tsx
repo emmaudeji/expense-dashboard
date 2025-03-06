@@ -4,6 +4,7 @@ import PaginationMain from "@/components/shared/PaginationMain";
 import { useExpenseContext } from "@/context/expensesContext";
 import ExpensesFormModal from "@/components/ExpensesFormModal";
 import { Button } from "@/components/ui/button";
+import TotalExpenses from "@/components/TotalExpenses";
 
 const Expenses = () => {
 
@@ -11,17 +12,20 @@ const Expenses = () => {
   return (
     <section className="">
     <div className="pb-8">
-      <h1 className="text-2xl font-bold">Expenses</h1>
-      <p className="max-w-md pb-6">
-        View and add expenses 
-      </p>
-      <div className="flex">
+      <div className='flex justify-between flex-wrap gap-x-6 items-center pb-4'>
+        <div className="">
+          <h1 className="text-2xl font-bold">Expenses</h1>
+          <p className="max-w-md pb-6">
+            View and add expenses 
+          </p>
+        </div>
+        <TotalExpenses/>
+      </div>
+      
+      <div className="flex ">
         <ExpensesFormModal 
           btn={<Button className="text-white rounded-full bg-black px-4 py-2 block">Add Expense</Button>}
         />
-        {/* <Link to="/add-expense" className="text-white rounded-full bg-black px-4 py-2 block">
-          Add Expense
-        </Link> */}
       </div>
       </div>
 

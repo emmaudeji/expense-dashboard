@@ -4,10 +4,12 @@ import { Expense } from "../types";
 import ExpensesFormModal from "./ExpensesFormModal";
 import DeleteExpenseModal from "./DeleteExpenseModal";
 import { Link } from "react-router-dom";
+import useExpenseStore from "@/store/useExpenseStore";
 // import { Link } from "react-router-dom";
 
 const ExpensesTable = () => {
-  const { expenses, loading, error } = useExpenseContext();
+  const {  loading, error } = useExpenseContext();
+  const {paginatedExpenses} = useExpenseStore()
 
   return (
     < >
@@ -36,8 +38,8 @@ const ExpensesTable = () => {
               </tr>
             </thead>
             <tbody>
-              {expenses.length > 0 ? (
-                expenses.map((expense: Expense) => (
+              {paginatedExpenses.length > 0 ? (
+                paginatedExpenses.map((expense: Expense) => (
                   <tr
                     key={expense.id}
                     className="border-t text-sm hover:bg-gray-50 transition"
