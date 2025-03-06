@@ -1,6 +1,6 @@
 // src/types/expense.ts
 export interface Expense {
-    id: number;
+    id?: string;
     name: string;
     amount: number;
     category: string;
@@ -16,4 +16,6 @@ export interface Query {
   page?: number | null,
   dateFrom?: string | null,
   dateTo?: string | null,
+  minAmount?:number,
+  maxAmount?:number
 }

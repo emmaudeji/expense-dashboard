@@ -20,6 +20,7 @@ const useExpenseStore = create<ExpenseStore>((set, get) => ({
   },
 
   addExpense: (expense) => {
+    // TODO: api add expenses, fetchPaginated expenses and set store state.
     const newExpenses = [expense, ...get().expenses, ];
     set({ expenses: newExpenses });
     localStorage.setItem("expenses", JSON.stringify(newExpenses));
