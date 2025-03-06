@@ -1,13 +1,27 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useExpenseStore from "../store/useExpenseStore";
+import { fetchExpenses,  fetchExpenses2} from "@/service/airtable";
+// import { expensesData } from "@/data";
+ 
 
 const Landing = () => {
   const { loadExpenses } = useExpenseStore();
+ 
 
   useEffect(() => {
     loadExpenses();
+    const fetch = async () => {
+      const res = await fetchExpenses2({minAmount: 5000,})
+      console.log({res})
+    }
+    fetch()
   }, []);
+
+  // const handleAdd = async() => {
+  //   const data = await addExpense(expensesData)
+  //   console.log({data})
+  // }
 
   
   return (
@@ -26,6 +40,7 @@ const Landing = () => {
           {/* <Link to={"/add-expense"} className="bg-white py-2 px-6 rounded-md text-blue-600">
             Add expenses
           </Link> */}
+          {/* <button onClick={handleAdd}>Add</button> */}
         </div>
       </section>
     </main>

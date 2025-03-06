@@ -6,6 +6,9 @@ import DashboardLayout from "./components/Dashboard";
 import Expenses from "./pages/Expenses";
 import ExpenseDetail from "./pages/ExpensesSlug/ExpenseDetail";
 import Summary from "./pages/Summary";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { ExpenseProvider } from "./context/expensesContext";
+import NotFound from "./components/NotFound";
 
 const AppRoutes = () => {
   return (
@@ -17,11 +20,16 @@ const AppRoutes = () => {
         <Route path="/signup" element={<SignUp />} />
 
         {/* Protected Dashboard Routes */}
-        <Route path="/" element={<DashboardLayout />}>
-          <Route path="/expenses" element={<Expenses />} />
-          <Route path="/expenses/:slug" element={<ExpenseDetail />} />
+        <Route element={<ProtectedRoute />}>
+        <Route  element={<DashboardLayout />}>
+          <Route path="/expenses" element={<ExpenseProvider><Expenses /></ExpenseProvider>} />
+          <Route path="/expenses/:slug" element={<ExpenseProvider><ExpenseDetail /></ExpenseProvider>} />
           <Route path="/summary" element={<Summary />} />
         </Route>
+        </Route>
+
+        {/* 404 Page */}
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </BrowserRouter>
   );

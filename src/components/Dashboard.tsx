@@ -3,7 +3,6 @@ import { Calendar, ChevronLeft, ChevronRight, UserCircle } from "lucide-react";
 import Breadcrumb from "./Breadcrumb";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
-import { ExpenseProvider } from "../context/expensesContext";
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +17,6 @@ const DashboardLayout = () => {
   }, []);
   
   return (
-    <ExpenseProvider>
       <main className="bg-blue-50">
         {/* Sidebar */}
         <aside
@@ -84,7 +82,7 @@ const DashboardLayout = () => {
           </footer>
         </div>
       </main>
-    </ExpenseProvider>
+ 
   );
 };
 

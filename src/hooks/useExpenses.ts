@@ -74,8 +74,8 @@ export const useExpense = () => {
   // Fetch expenses when URL changes
   useEffect(() => {
     const params = getParamsFromURL();
-// console.log('loading')
-  filterExpenses(params);
+    // console.log('loading')
+    filterExpenses(params);
   }, [searchParams.toString()]);
 
   const refetch = async () => {
