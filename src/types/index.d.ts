@@ -16,6 +16,6 @@ export interface Query {
   page?: number | null,
   dateFrom?: string | null,
   dateTo?: string | null,
-  minAmount?:number,
-  maxAmount?:number
+  minAmount?:string| null,
+  maxAmount?:string| null
 }

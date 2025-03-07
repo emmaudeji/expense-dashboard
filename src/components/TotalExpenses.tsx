@@ -1,3 +1,4 @@
+import { formatAmount } from "@/lib/formatCurrency";
 import useExpenseStore from "@/store/useExpenseStore";
 import { useMemo } from "react";
 
@@ -13,7 +14,7 @@ const TotalExpenses = () => {
   return (
     <div className="leading">
       <small className="">Total Expenses</small>
-      <h6 className="font-bold bg-blue-50 border rounded-md px-2 text-center py-1">₦{totalExp}</h6>
+      <h6 className="font-bold bg-blue-50 border rounded-md px-2 text-center py-1">{formatAmount(totalExp)}</h6>
     </div>
   );
 };

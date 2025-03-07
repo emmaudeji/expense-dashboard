@@ -3,6 +3,8 @@ import { useExpenseContext } from "../context/expensesContext";
 import FilterCategory from "./FilterCategory";
 import FilterByStatus from "./FilterByStatus";
 import SearchTags from "./SearchTags";
+import FilterByAmount from "./FilterByAmount";
+import { Search } from "lucide-react";
 
 const Filtering = () => {
   const { param, setCurrentPage, updateURL } = useExpenseContext();
@@ -20,25 +22,29 @@ const Filtering = () => {
   };
 
   return (
-    <section className="space-y-2">
-      <section className="w-full flex flex-col gap-4 md:flex-row md:justify-between">
+    <section className="space-y-2 w-full overflow-x-hidden">
+
+      <section className="w-full flex flex-col gap-2 xl:flex-row md:justify-between">
         {/* Search Input */}
-        <div className="flex max-w-md w-full gap-2 items-center">
+        <div className="flex max-w-md min-w-sm  w-full hover:border-gray-400 duration-300  border-gray-300 gap-2 items-center mx-auto xl:mx-0 border rounded-full  px-4 h-12">
+          <Search className="shrink-0 text-gray-300" size={20}/>
           <input
             type="search"
             placeholder="Search by expense name"
-            className="border rounded-full bg-transparent px-3 border-input flex-1 focus:outline-none py-3 border-gray-500 text-sm"
+            className=" bg-transparent focus:outline-none w-full  text-sm"
             value={query}
             name="query"
             id="query"
             onChange={handleOnChange}
           />
         </div>
-
-        {/* Filters */}
-        <div className="pt-2 flex w-full overflow-auto no-scrollbar gap-4 items-center justify-center max-w-3xl mx-auto">
-          <FilterCategory />
-          <FilterByStatus />
+ 
+        <div className=" gap-2 flex flex-col sm:flex-row justify-center items-center xl:justify-end w-full">
+          <div className="flex items-center gap-2">
+            <FilterCategory />
+            <FilterByStatus />
+          </div>
+          <FilterByAmount />
         </div>
       </section>
 

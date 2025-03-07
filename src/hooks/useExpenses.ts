@@ -38,6 +38,8 @@ export const useExpense = () => {
       status: searchParams.get("status") || null,
       dateFrom: searchParams.get("dateFrom") || null,
       dateTo: searchParams.get("dateTo") || null,
+      minAmount: searchParams.get("minAmount") || null,
+      maxAmount: searchParams.get("maxAmount") || null,
       page: Number(searchParams.get("page")) || null,
     };
   };
@@ -49,8 +51,9 @@ export const useExpense = () => {
     if (params.dateFrom) newSearchParams.set("dateFrom", params.dateFrom);
     if (params.dateTo) newSearchParams.set("dateTo", params.dateTo);
     if (params.status) newSearchParams.set("status", params.status);
+    if (params.minAmount) newSearchParams.set("minAmount", params.minAmount);
+    if (params.maxAmount) newSearchParams.set("maxAmount", params.maxAmount);
     if (params.page) newSearchParams.set("page", params.page.toString());
-    
     // Only update if different from current params
     if (newSearchParams.toString() !== searchParams.toString()) {
       setSearchParams(newSearchParams);

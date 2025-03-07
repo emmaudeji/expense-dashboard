@@ -13,7 +13,6 @@ const SearchTags = ({setQuery}:{setQuery:(q:string)=>void}) => {
       value !== "" &&
       ![ "page"].includes(key)
   );
-
   // Function to parse JSON lists safely
   const parseJSONList = (value: string) => {
     try {

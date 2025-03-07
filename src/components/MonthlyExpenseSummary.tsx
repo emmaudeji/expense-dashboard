@@ -1,6 +1,7 @@
 import { getMonthlyExpenseSummary,   } from "@/lib/summary";
 import useExpenseStore from "@/store/useExpenseStore";
 import MonthlyChart from "./chart/MonthlyChart";
+import { formatAmount } from "@/lib/formatCurrency";
 
 const MonthlyExpenseSummary = () => {
   const { expenses } = useExpenseStore();
@@ -10,7 +11,7 @@ const MonthlyExpenseSummary = () => {
 
   return (
     <div className=""> 
-    <h4 className="font-semibold text-lg pb-2">Monthly summary</h4>
+    {/* <h4 className="font-semibold text-lg pb-2">Monthly summary</h4> */}
 
     <MonthlyChart />
     <div className="overflow-x-auto">
@@ -27,7 +28,7 @@ const MonthlyExpenseSummary = () => {
             <tr key={status} className="border-b hover:bg-gray-50">
               <td className="p-3 capitalize">{month.toLowerCase()}</td>
               <td className="p-3">{count}</td>
-              <td className="p-3 font-semibold">₦{total.toFixed(2)}</td>
+              <td className="p-3 font-semibold"> {formatAmount(total)}</td>
             </tr>
           )) : null}
         </tbody>

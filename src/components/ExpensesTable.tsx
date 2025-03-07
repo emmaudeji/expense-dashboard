@@ -5,6 +5,7 @@ import ExpensesFormModal from "./ExpensesFormModal";
 import DeleteExpenseModal from "./DeleteExpenseModal";
 import { Link } from "react-router-dom";
 import useExpenseStore from "@/store/useExpenseStore";
+import { formatAmount } from "@/lib/formatCurrency";
 // import { Link } from "react-router-dom";
 
 const ExpensesTable = () => {
@@ -47,7 +48,7 @@ const ExpensesTable = () => {
                     <td className="p-3">{new Date(expense.date).toLocaleDateString()}</td>
                     <td className="p-3">{expense.name}</td>
                     <td className="p-3">{expense.category}</td>
-                    <td className="p-3 font-medium text-gray-800">₦{expense.amount}</td>
+                    <td className="p-3 font-medium text-gray-800"> {formatAmount(expense.amount)}</td>
                     <td className="p-3">
                       <span className={`px-2 py-1 text-xs font-semibold rounded-full 
                         ${expense.status === "ACTIVE" ? "bg-blue-100 text-blue-600" : 
