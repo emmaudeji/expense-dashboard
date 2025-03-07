@@ -24,13 +24,11 @@ export const useExpense = () => {
 
   const { addExpense, updateExpense, removeExpense, getExpenses, expenses, paginatedExpenses, setPaginatedExpenses} = useExpenseStore();
 
-  // used to achieve pagination
-  const sliceExpenses = (page:number, data?:Expense[]) => {
-    const refactoredData = data?data:expenses
-    const slicedData =  refactoredData.slice((page - 1) * settings.LIMIT, page * settings.LIMIT);
-    console.log({expenses,slicedData})
-    setPaginatedExpenses(slicedData)
-  }
+  // Pagination slicing
+  const sliceExpenses = (page: number, data: Expense[] = expenses) => {
+    const slicedData = data.slice((page - 1) * settings.LIMIT, page * settings.LIMIT);
+    setPaginatedExpenses(slicedData);
+  };
  
   // Convert URLSearchParams to a Query object safely
   const getParamsFromURL = (): Query => {
@@ -52,33 +50,45 @@ export const useExpense = () => {
     if (params.dateTo) newSearchParams.set("dateTo", params.dateTo);
     if (params.status) newSearchParams.set("status", params.status);
     if (params.page) newSearchParams.set("page", params.page.toString());
-
+    
     // Only update if different from current params
     if (newSearchParams.toString() !== searchParams.toString()) {
       setSearchParams(newSearchParams);
     }
   };
-
+  
+  // Fetch expenses based on query
   const filterExpenses = async (query: Query): Promise<void> => {
     setError("");
     setLoading(true);
-
-    const { data, error, tableSize } = await getExpenses(query);
-
-    if (error) {
-      setError(error);
-    }  else {
-      sliceExpenses(query.page || currentPage, data)
-    }
-    console.log({data,query})
-    setLoading(false);
-    setTotalPages(Math.ceil((tableSize || 0) / settings.LIMIT));
     setParam(query);
-    updateURL(query);
-  };
-
+  
+      try {
+        const { data, error, tableSize } = await getExpenses(query);
+        
+        if (error) {
+          setError(error);
+        }  else {
+          // slice the view locally
+          sliceExpenses(query.page || currentPage, data)
+          setTotalPages(Math.ceil((tableSize || 0) / settings.LIMIT));
+          // updateURL(query);
+        }
+  
+      } catch (err) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError("An unknown error occurred");
+          }
+      } finally {
+        setLoading(false);
+      }
+    };
+  
   // Fetch expenses when URL changes
   useEffect(() => {
+    // TODO : load from the store when there is no param, but it will work with wrong expenses data if you are clearing params
     const params = getParamsFromURL();
       filterExpenses(params)
   }, [searchParams.toString()]);
@@ -94,7 +104,7 @@ export const useExpense = () => {
     // await filterExpenses({ ...param, page });
   };
 
-  // **Manage Expenses in Zustand**
+  // Manage Expenses in Zustand
   const handleAddExpense = async (expense: Expense) => {
     const data:Expense[] = await addExpense(expense);
     sliceExpenses(1,data)
@@ -129,5 +139,6 @@ export const useExpense = () => {
     handleAddExpense,
     handleUpdateExpense,
     handleDeleteExpense,
+    updateURL,
   };
 };

@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useExpenseContext } from "../context/expensesContext";
 import FilterCategory from "./FilterCategory";
 import FilterByStatus from "./FilterByStatus";
 import SearchTags from "./SearchTags";
 
 const Filtering = () => {
-  const { filterExpenses, param, setCurrentPage } = useExpenseContext();
+  const { param, setCurrentPage, updateURL } = useExpenseContext();
   const [query, setQuery] = useState("");
 
-  // Debounce effect for search input
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      const { page, ...rest } = param;
-      setCurrentPage(1);
-      filterExpenses({ ...rest, search: query });
-    }, 300); // Adjust debounce delay as needed
+  const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value);
 
-    return () => clearTimeout(delayDebounce);
-  }, [query]); // Runs only when `query` changes
+    if (!value.length || value.length >= 3) {
+      const {page, ...newParam} = param
+      updateURL({ ...newParam, search: value });
+      setCurrentPage(1);
+    }
+  };
 
   return (
     <section className="space-y-2">
@@ -27,20 +27,18 @@ const Filtering = () => {
           <input
             type="search"
             placeholder="Search by expense name"
-            className="border rounded-full bg-transparent px-3 border-input flex-1 focus:outline-none focus-within:outline-none py-3 border-gray-500 text-sm"
+            className="border rounded-full bg-transparent px-3 border-input flex-1 focus:outline-none py-3 border-gray-500 text-sm"
             value={query}
             name="query"
             id="query"
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={handleOnChange}
           />
         </div>
 
         {/* Filters */}
-        <div>
-          <div className="pt-2 flex w-full overflow-auto no-scrollbar gap-4 items-center justify-center gap-4 max-w-3xl mx-auto">
-            <FilterCategory />
-            <FilterByStatus />
-          </div>
+        <div className="pt-2 flex w-full overflow-auto no-scrollbar gap-4 items-center justify-center max-w-3xl mx-auto">
+          <FilterCategory />
+          <FilterByStatus />
         </div>
       </section>
 
@@ -50,3 +48,15 @@ const Filtering = () => {
 };
 
 export default Filtering;
+
+
+  // Debounce effect for search input
+  // useEffect(() => {
+  //   const delayDebounce = setTimeout(() => {
+  //     const { page, ...rest } = param;
+  //     setCurrentPage(1);
+  //     filterExpenses({ ...rest, search: query });
+  //   }, 300); // Adjust debounce delay as needed
+
+  //   return () => clearTimeout(delayDebounce);
+  // }, [query]); // Runs only when `query` changes

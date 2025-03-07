@@ -3,7 +3,7 @@ import { Query } from "@/types";
 import { format, isValid, parseISO } from "date-fns";
 
 const SearchTags = ({setQuery}:{setQuery:(q:string)=>void}) => {
-  const { filterExpenses,setCurrentPage,param } = useExpenseContext();
+  const { updateURL,setCurrentPage,param } = useExpenseContext();
 
   // Filter out unwanted keys
   const filteredEntries = Object.entries(param).filter(
@@ -48,7 +48,7 @@ const SearchTags = ({setQuery}:{setQuery:(q:string)=>void}) => {
     const { page, ...removedPage } = updatedParams;
     setCurrentPage(1);
  
-    filterExpenses(removedPage as Query);
+    updateURL(removedPage as Query);
 };
 
   if (filteredEntries.length === 0) return null;

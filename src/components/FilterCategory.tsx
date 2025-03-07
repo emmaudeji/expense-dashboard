@@ -6,7 +6,7 @@ import { Layout } from "lucide-react";
 import { expenseCategories } from "@/data";
 
 const FilterCategory = () => {
-  const { filterExpenses, param, setCurrentPage } = useExpenseContext();
+  const { updateURL, param, setCurrentPage } = useExpenseContext();
 
   // Extract selected categories from params safely
   const selectedCategories = useMemo(() => {
@@ -33,7 +33,7 @@ const FilterCategory = () => {
     };
 
     setCurrentPage(1); // Reset pagination
-    filterExpenses(newQueryParams); // Apply filter
+    updateURL(newQueryParams); // Apply filter
   };
 
   return (

@@ -5,7 +5,7 @@ import { Box, StatusIcon, TickedBox } from "@/contants";
 import { expenseStatuses } from "@/data";
 
 const FilterByStatus = () => {
-  const { filterExpenses, param, setCurrentPage } = useExpenseContext();
+  const { updateURL, param, setCurrentPage } = useExpenseContext();
 
   // Extract selected status from params safely
   const selectedStatuses = useMemo(() => {
@@ -32,7 +32,7 @@ const FilterByStatus = () => {
     };
 
     setCurrentPage(1); // Reset pagination
-    filterExpenses(newQueryParams); // Apply filter
+    updateURL(newQueryParams); // Apply filter
   };
 
   return (

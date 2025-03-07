@@ -10,7 +10,7 @@ interface ExpenseContextType {
   param: Query;
   setParam: (param: Query) => void;
   expenses: Expense[];
-  setExpenses: (expenses: Expense[]) => void;
+ 
   error: string;
   setError: (error: string) => void;
   totalPages: number;
@@ -22,6 +22,7 @@ interface ExpenseContextType {
   handleAddExpense:(data:Expense)=>void,
   handleUpdateExpense:(data:Expense)=>void,
   handleDeleteExpense:(slug:string)=>void,
+  updateURL:(param: Query) => void;
 }
 
 // Create context
