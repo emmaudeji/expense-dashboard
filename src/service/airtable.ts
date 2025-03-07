@@ -41,7 +41,7 @@ export const fetchExpenses = async (
 
     if (selectedCategories.length) {
       const categoryFilter = selectedCategories
-        .map((cat) => `{category} = "${cat}"`)
+        .map((cat:string) => `{category} = "${cat}"`)
         .join(", ");
       filterConditions.push(`OR(${categoryFilter})`);
     }
@@ -55,7 +55,7 @@ export const fetchExpenses = async (
 
       if (selectedStatuses.length) {
         const statusFilter = selectedStatuses
-          .map((st) => `{status} = "${st}"`)
+          .map((st:string) => `{status} = "${st}"`)
           .join(", ");
         filterConditions.push(`OR(${statusFilter})`);
       } else {
@@ -141,7 +141,7 @@ export const addExpense = async (expense: Expense): Promise<Expense> => {
 };
 
 //  Update an expense
-export const updateExpense = async (dataId: string, updatedExpense: Partial<Expense>): Promise<Expense> => {
+export const updateExpense = async ( updatedExpense: Partial<Expense>): Promise<Expense> => {
   const {id, ...newData} = updatedExpense
   const response = await api.patch(`/${id}`, {
     fields: {...newData, amount: Number(newData.amount)},

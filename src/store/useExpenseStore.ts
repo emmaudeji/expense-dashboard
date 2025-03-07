@@ -71,7 +71,7 @@ const useExpenseStore = create<ExpenseStore>((set, get) => ({
   },
 
   updateExpense: async (data) => {
-    await updateExpense(data.id!, data,)
+    await updateExpense( data)
     const newExpenses = get().expenses.map((exp) =>
       exp.id === data.id ? { ...exp, ...data } : exp
     );

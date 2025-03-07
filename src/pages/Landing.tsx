@@ -16,7 +16,7 @@ const Landing = () => {
   // }
 
   return (
-    <main className="p-4 min-h-screen max-w-3xl mx-auto">
+    <main className="p-4 min-h-screen max-w-3xl mx-auto space-y-8">
       <section className="p-6 flex flex-col justify-between gap-24 text-white rounded-lg min-h-60 bg-blue-600">
         <div>
           <h1 className="font-bold text-4xl max-w-md">
@@ -34,6 +34,10 @@ const Landing = () => {
           {/* <button onClick={handleAdd}>Add</button> */}
         </div>
       </section>
+
+      <div className="mx-auto max-w-md p-8 rounded-lg italic font-semibold bg-gray-200">
+        The table was updated with some domi data to properly implement pagination
+      </div>
     </main>
   );
 };
