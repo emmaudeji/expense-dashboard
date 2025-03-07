@@ -9,10 +9,12 @@ import Summary from "./pages/Summary";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ExpenseProvider } from "./context/expensesContext";
 import NotFound from "./components/NotFound";
+import ErrorBoundary, { ErrorPage } from "./pages/ErrorBoundary";
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
+      <ErrorBoundary>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Landing />} />
@@ -30,7 +32,9 @@ const AppRoutes = () => {
 
         {/* 404 Page */}
         <Route path="*" element={<NotFound/>} />
+        <Route path="/error" element={<ErrorPage />} />
       </Routes>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 };
